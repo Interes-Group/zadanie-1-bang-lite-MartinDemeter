@@ -10,10 +10,11 @@ public class Hrac {
 
     private int zivoty;
 
-    private ArrayList<Karta> karty;
+    private ArrayList<Karta> kartyNaRuke;
 
+    private ArrayList<Karta> spoecialneKarty;
     public Hrac(String meno) {
-        this.karty = new ArrayList<Karta>();
+        this.kartyNaRuke = new ArrayList<Karta>();
         this.meno = meno;
         this.zivoty = 4;
 
@@ -28,16 +29,44 @@ public class Hrac {
     }
 
     public void setKarty(ArrayList<Karta> karty) {
-        this.karty = karty;
+        this.kartyNaRuke = karty;
     }
 
     public ArrayList<Karta> zoberKartyHraca() {
-        ArrayList<Karta> zobrateKarty = new ArrayList<>(this.karty);
-        this.karty.clear();
+        ArrayList<Karta> zobrateKarty = new ArrayList<>(this.kartyNaRuke);
+        this.kartyNaRuke.clear();
         return zobrateKarty;
+    }
+
+    public ArrayList<Karta> kartyNaRuke() {
+        ArrayList<Karta> karty = new ArrayList<Karta>();
+        for (Karta karta : this.kartyNaRuke) {
+            karty.add(karta);
+        }
+        return karty;
+    }
+
+    public void odhodKartu(int cisloKarty) {
+        this.kartyNaRuke.remove(cisloKarty);
+    }
+
+    public ArrayList<Karta> getKartyNaRuke() {
+        return kartyNaRuke;
+    }
+
+    public void minusZivot() {
+        this.zivoty--;
+    }
+
+    public void plusZivot() {
+        this.zivoty++;
     }
 
     public boolean jeAktivny() {
         return this.zivoty > 0;
+    }
+
+    public void setZivoty(int zivoty) {
+        this.zivoty = zivoty;
     }
 }

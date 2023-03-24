@@ -2,8 +2,9 @@ package sk.stuba.fei.uim.oop.bang;
 
 import sk.stuba.fei.uim.oop.hrac.Hrac;
 import sk.stuba.fei.uim.oop.karty.Karta;
-import sk.stuba.fei.uim.oop.plocha.HraciaPlocha;
+import sk.stuba.fei.uim.oop.plocha.Plocha;
 import sk.stuba.fei.uim.oop.utility.ZKlavesnice;
+
 
 import java.util.ArrayList;
 
@@ -13,7 +14,8 @@ public class BangFei {
 
     private int aktualnyHrac;
 
-    private HraciaPlocha hraciaPlocha;
+    private Plocha plocha;
+
 
     public BangFei() {
         System.out.println("--- Welcome to FEI BANG ---");
@@ -29,34 +31,85 @@ public class BangFei {
             this.hraci[i] = new Hrac(ZKlavesnice.readString("*** Enter name for PLAYER " + (i+1) + " : ***"));
         }
 
-        this.hraciaPlocha = new HraciaPlocha(this.hraci);
+        this.plocha = new Plocha(this.hraci);
         this.zaciatokHry();
     }
 
     private void zaciatokHry() {
-        System.out.println("--- GAME STARTED ---");
+        System.out.println("\n--- GAME STARTED ---");
         while (this.pocetAktivnychHracov() > 1) {
             Hrac aktivnyHrac = this.hraci[this.aktualnyHrac];
             if (!aktivnyHrac.jeAktivny()) {
                 ArrayList<Karta> kartyDoBalicka = aktivnyHrac.zoberKartyHraca();
                 for (Karta karta : kartyDoBalicka) {
-                    this.hraciaPlocha.pridajKartyDoBalika(karta);
+                    this.plocha.pridajKartuDoBalika(karta);
                 }
                 this.pocitadlo();
                 continue;
             }
 
-            System.out.println();
-            System.out.println();
-            this.hrajKolo(aktivnyHrac);
+            System.out.println("\n--- PLAYER " + aktivnyHrac.getMeno() + " STARTS TURN ---\n");
+            System.out.println(this.plocha.getOdhadyovaciBalikKariet().size());
+            System.out.println(this.plocha.getBalikKariet().size());
+            this.koloHry(aktivnyHrac);
             this.pocitadlo();
         }
-        System.out.println();
-        System.out.println();
+        System.out.println("\n--- GAME FINISHED ---");
+        System.out.println("*** And the WINNER is " + vytaz().getMeno() + " ***");
     }
 
-    private void hrajKolo(Hrac aktivnyHrac) {
+    private void koloHry(Hrac aktivnyHrac) {
+        aktivnyHrac.getKartyNaRuke().add(this.plocha.dajKartu());
+        aktivnyHrac.getKartyNaRuke().add(this.plocha.dajKartu());
 
+        int cisloKarty = 0;
+//        vypisKariet(aktivnyHrac, hratelneKarty);
+        do {
+            ArrayList<Karta> hratelneKarty = aktivnyHrac.kartyNaRuke();
+
+            this.vypisHracov(aktivnyHrac);
+            System.out.println("Tvoje Karty: ");
+            for (int i = 0; i < aktivnyHrac.kartyNaRuke().size(); i++) {
+                System.out.print("[" + (i + 1) + "] " + aktivnyHrac.getKartyNaRuke().get(i).getClass().getSimpleName() + "  ");
+
+            }
+            cisloKarty = vyberKartu(aktivnyHrac.getKartyNaRuke(), "play");
+            if (cisloKarty >= 0){
+                aktivnyHrac.getKartyNaRuke().get(cisloKarty).zahrajKartu(aktivnyHrac);
+                this.plocha.pridajKartuDoOdhadzovaciehoBalika(aktivnyHrac.getKartyNaRuke().get(cisloKarty));
+                aktivnyHrac.odhodKartu(cisloKarty);
+            }
+
+
+        } while (cisloKarty != -1);
+
+    }
+
+
+//    private void vypisKariet(Hrac aktivnyHrac, ArrayList<Karta> hratelneKarty) {
+//
+//        do {
+//        System.out.println("Tvoje Karty: ");
+//            for (int i = 0; i < hratelneKarty.size(); i++) {
+//                System.out.print("[" + (i + 1) + "] " + hratelneKarty.get(i).getClass().getSimpleName() + "  ");
+//            }
+//            int cisloKarty = vyberKartu(hratelneKarty, "play");
+//            hratelneKarty.get(cisloKarty).zahrajKartu(aktivnyHrac);
+//        } while ();
+//    }
+
+
+    private int vyberKartu(ArrayList<Karta> karty, String slovo) {
+        int cisloKarty = 0;
+        while (true) {
+            cisloKarty = ZKlavesnice.readInt("\n*** Zadaj cislo karty ktoru chces zahrat alebo 0 pre koniec kola " + slovo + ": ***") - 1;
+            if (cisloKarty < -1 || cisloKarty > karty.size() - 1) {
+                System.out.println(" !!! You enter wrong number of card. Try Again! !!! ");
+            } else {
+                break;
+            }
+        }
+        return cisloKarty;
     }
 
     private int pocetAktivnychHracov() {
@@ -69,8 +122,28 @@ public class BangFei {
         return pocet;
     }
 
+    private void vypisHracov(Hrac aktivnyHrac) {
+        for (Hrac hrac : this.hraci) {
+            if(aktivnyHrac.equals(hrac))
+                System.out.print("Na tahu: ");
+            System.out.println(hrac.getMeno());
+            System.out.println(" Počet žvotov: " + hrac.getZivoty());
+            System.out.println(" Počet kariet na ruke: " + hrac.getKartyNaRuke().size() + "\n");
+
+        }
+    }
+
     private void pocitadlo() {
         this.aktualnyHrac++;
         this.aktualnyHrac %= this.hraci.length;
+    }
+
+    private Hrac vytaz() {
+        for (Hrac hrac : this.hraci) {
+            if (hrac.jeAktivny()) {
+                return hrac;
+            }
+        }
+    return null;
     }
 }
