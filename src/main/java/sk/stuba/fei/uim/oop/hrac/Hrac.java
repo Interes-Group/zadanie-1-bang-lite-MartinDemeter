@@ -38,12 +38,21 @@ public class Hrac {
         return zobrateKarty;
     }
 
-    public ArrayList<Karta> kartyNaRuke() {
-        ArrayList<Karta> karty = new ArrayList<Karta>();
-        for (Karta karta : this.kartyNaRuke) {
-            karty.add(karta);
+//    public ArrayList<Karta> kartyNaRuke() {
+//        ArrayList<Karta> karty = new ArrayList<Karta>();
+//        for (Karta karta : this.kartyNaRuke) {
+//            karty.add(karta);
+//        }
+//        return karty;
+//    }
+
+    public void odhodKarty(ArrayList<Karta> odhadyovaciBalikKariet) {
+        while (this.kartyNaRuke.size() > this.zivoty) {
+            int rando = (int)((Math.random()*this.kartyNaRuke.size()));
+            odhadyovaciBalikKariet.add(this.kartyNaRuke.get(rando));
+            this.kartyNaRuke.remove(rando);
+            System.out.println(rando);
         }
-        return karty;
     }
 
     public void odhodKartu(int cisloKarty) {

@@ -49,30 +49,33 @@ public class BangFei {
             }
 
             System.out.println("\n--- PLAYER " + aktivnyHrac.getMeno() + " STARTS TURN ---\n");
-            System.out.println(this.plocha.getOdhadyovaciBalikKariet().size());
-            System.out.println(this.plocha.getBalikKariet().size());
             this.koloHry(aktivnyHrac);
             this.pocitadlo();
         }
-        System.out.println("\n--- GAME FINISHED ---");
-        System.out.println("*** And the WINNER is " + vytaz().getMeno() + " ***");
+
     }
 
     private void koloHry(Hrac aktivnyHrac) {
         aktivnyHrac.getKartyNaRuke().add(this.plocha.dajKartu());
         aktivnyHrac.getKartyNaRuke().add(this.plocha.dajKartu());
 
+        System.out.println(this.plocha.getOdhadyovaciBalikKariet().size());
+        System.out.println(this.plocha.getBalikKariet().size());
+
         int cisloKarty = 0;
 //        vypisKariet(aktivnyHrac, hratelneKarty);
         do {
-            ArrayList<Karta> hratelneKarty = aktivnyHrac.kartyNaRuke();
+            if (this.pocetAktivnychHracov() == 1) {
+                vytaz();
+                break;
+            }
 
             this.vypisHracov(aktivnyHrac);
             System.out.println("Tvoje Karty: ");
-            for (int i = 0; i < aktivnyHrac.kartyNaRuke().size(); i++) {
+            for (int i = 0; i < aktivnyHrac.getKartyNaRuke().size(); i++) {
                 System.out.print("[" + (i + 1) + "] " + aktivnyHrac.getKartyNaRuke().get(i).getClass().getSimpleName() + "  ");
-
             }
+
             cisloKarty = vyberKartu(aktivnyHrac.getKartyNaRuke(), "play");
             if (cisloKarty >= 0){
                 aktivnyHrac.getKartyNaRuke().get(cisloKarty).zahrajKartu(aktivnyHrac);
@@ -80,10 +83,20 @@ public class BangFei {
                 aktivnyHrac.odhodKartu(cisloKarty);
             }
 
+            if (aktivnyHrac.getKartyNaRuke().isEmpty()) {
+//                System.out.println(aktivnyHrac.getKartyNaRuke().size());
+//                System.out.println(aktivnyHrac.getKartyNaRuke().isEmpty());
+                break;
+            }
 
         } while (cisloKarty != -1);
 
+       if (aktivnyHrac.getKartyNaRuke().size() > aktivnyHrac.getZivoty()) {
+           aktivnyHrac.odhodKarty(this.plocha.getOdhadyovaciBalikKariet());
+       }
     }
+
+
 
 
 //    private void vypisKariet(Hrac aktivnyHrac, ArrayList<Karta> hratelneKarty) {
@@ -138,12 +151,14 @@ public class BangFei {
         this.aktualnyHrac %= this.hraci.length;
     }
 
-    private Hrac vytaz() {
+    private void vytaz() {
         for (Hrac hrac : this.hraci) {
             if (hrac.jeAktivny()) {
-                return hrac;
+                System.out.println("\n--- GAME FINISHED ---");
+                System.out.println("*** And the WINNER is " + hrac.getMeno() + " ***");
+
             }
         }
-    return null;
+//    return null;
     }
 }
