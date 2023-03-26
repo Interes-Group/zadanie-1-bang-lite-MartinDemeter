@@ -1,8 +1,6 @@
 package sk.stuba.fei.uim.oop.karty.hnedeKarty;
 
 import sk.stuba.fei.uim.oop.hrac.Hrac;
-import sk.stuba.fei.uim.oop.karty.Karta;
-
 
 public class Bang extends HnedaKarta {
 
@@ -14,7 +12,6 @@ public class Bang extends HnedaKarta {
 
     @Override
     public void hraj(Hrac hrac) {
-
         hrac.hrajBang();
     }
 

@@ -1,8 +1,6 @@
 package sk.stuba.fei.uim.oop.karty.modreKarty;
 
 import sk.stuba.fei.uim.oop.hrac.Hrac;
-import sk.stuba.fei.uim.oop.karty.Karta;
-import sk.stuba.fei.uim.oop.plocha.Plocha;
 
 public class Dynamit extends ModraKarta {
 
@@ -15,7 +13,7 @@ public class Dynamit extends ModraKarta {
     @Override
     public void hraj(Hrac hrac) {
         super.hraj(hrac);
-        hrac.getSpoecialneKarty().add(this);
+        hrac.getSpecialneKarty().add(this);
     }
 
     @Override

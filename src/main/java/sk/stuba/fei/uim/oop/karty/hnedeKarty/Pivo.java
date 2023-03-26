@@ -10,7 +10,6 @@ public class Pivo extends HnedaKarta {
         super(CARD_NAME);
     }
 
-
     @Override
     public void hraj(Hrac hrac) {
         super.hraj(hrac);

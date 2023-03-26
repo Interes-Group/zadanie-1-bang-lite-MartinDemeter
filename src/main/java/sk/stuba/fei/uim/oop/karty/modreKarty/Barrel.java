@@ -14,7 +14,7 @@ public class Barrel extends ModraKarta {
 
     @Override
     public void hraj(Hrac hrac) {
-        hrac.getSpoecialneKarty().add(this);
+        hrac.getSpecialneKarty().add(this);
         super.hraj(hrac);
     }
 
@@ -22,7 +22,7 @@ public class Barrel extends ModraKarta {
 
     @Override
     public boolean jeKartahratelna(Hrac hrac) {
-        for (Karta karta : hrac.getSpoecialneKarty())
+        for (Karta karta : hrac.getSpecialneKarty())
             if (karta instanceof Barrel){
                 System.out.println("Barrel sa neda zahrat");
                 return false;

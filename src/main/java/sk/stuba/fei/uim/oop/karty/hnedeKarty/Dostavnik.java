@@ -1,8 +1,6 @@
 package sk.stuba.fei.uim.oop.karty.hnedeKarty;
 
 import sk.stuba.fei.uim.oop.hrac.Hrac;
-import sk.stuba.fei.uim.oop.karty.Karta;
-import sk.stuba.fei.uim.oop.plocha.Plocha;
 
 public class Dostavnik extends HnedaKarta {
 

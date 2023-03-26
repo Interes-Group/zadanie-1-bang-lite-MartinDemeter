@@ -1,8 +1,6 @@
 package sk.stuba.fei.uim.oop.karty.modreKarty;
 
 import sk.stuba.fei.uim.oop.hrac.Hrac;
-import sk.stuba.fei.uim.oop.karty.Karta;
-import sk.stuba.fei.uim.oop.plocha.Plocha;
 
 public class Vazenie extends ModraKarta {
 
@@ -15,12 +13,12 @@ public class Vazenie extends ModraKarta {
 
     @Override
     public boolean vyzadujeCielovehoHraca() {
-        return super.vyzadujeCielovehoHraca();
+        return true;
     }
 
     @Override
     public void hraj(Hrac hrac) {
-        super.hraj(hrac);
-        hrac.getSpoecialneKarty().add(this);
+
+        hrac.getSpecialneKarty().add(this);
     }
 }

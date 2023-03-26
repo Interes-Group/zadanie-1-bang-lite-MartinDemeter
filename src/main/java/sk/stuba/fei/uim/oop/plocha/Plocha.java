@@ -1,6 +1,5 @@
 package sk.stuba.fei.uim.oop.plocha;
 
-import sk.stuba.fei.uim.oop.hrac.Hrac;
 import sk.stuba.fei.uim.oop.karty.*;
 import sk.stuba.fei.uim.oop.karty.hnedeKarty.*;
 import sk.stuba.fei.uim.oop.karty.modreKarty.Barrel;
@@ -34,8 +33,8 @@ public class Plocha {
         for (int i = 0; i < 4; i++) {
             balikKariet.add(new Dostavnik());
         }
-        for (int i = 0; i < 20; i++) {
-            balikKariet.add(new Dynamit());
+        for (int i = 0; i < 3; i++) {
+            balikKariet.add(new Vazenie());
         }
         balikKariet.add(new Indiani());
         balikKariet.add(new Indiani());
@@ -45,10 +44,6 @@ public class Plocha {
 
          Collections.shuffle(this.balikKariet);
 
-    }
-
-    public void vytlacPlochu() {
-        System.out.println();
     }
 
     public void pridajKartuDoBalika(Karta karta) {

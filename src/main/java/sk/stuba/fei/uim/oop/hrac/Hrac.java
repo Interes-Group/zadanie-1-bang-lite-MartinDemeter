@@ -2,7 +2,6 @@ package sk.stuba.fei.uim.oop.hrac;
 
 import sk.stuba.fei.uim.oop.karty.Karta;
 import sk.stuba.fei.uim.oop.karty.hnedeKarty.Bang;
-import sk.stuba.fei.uim.oop.karty.hnedeKarty.CatBalou;
 import sk.stuba.fei.uim.oop.karty.hnedeKarty.Vedla;
 import sk.stuba.fei.uim.oop.karty.modreKarty.Barrel;
 import sk.stuba.fei.uim.oop.plocha.Plocha;
@@ -22,13 +21,15 @@ public class Hrac {
 
     private final Plocha plocha;
 
+    private boolean voVazenie;
+
     public Hrac(Plocha plocha, String meno) {
-        this.kartyNaRuke = new ArrayList<Karta>();
-        this.spoecialneKarty = new ArrayList<Karta>();
+        this.kartyNaRuke = new ArrayList<>();
+        this.spoecialneKarty = new ArrayList<>();
         this.plocha = plocha;
         this.meno = meno;
         this.zivoty = 4;
-
+        this.voVazenie = false;
     }
 
     public String getMeno() {
@@ -37,6 +38,14 @@ public class Hrac {
 
     public int getZivoty() {
         return zivoty;
+    }
+
+    public void setVoVazenie() {
+        this.voVazenie = false;
+    }
+
+    public boolean isVoVazenie() {
+        return voVazenie;
     }
 
     public void setKarty(ArrayList<Karta> karty) {
@@ -49,45 +58,27 @@ public class Hrac {
         return zobrateKarty;
     }
 
-//    public ArrayList<Karta> kartyNaRuke() {
-//        ArrayList<Karta> karty = new ArrayList<Karta>();
-//        for (Karta karta : this.kartyNaRuke) {
-//            karty.add(karta);
-//        }
-//        return karty;
-//    }
-
     public void zoberKartu() {
         this.kartyNaRuke.add(this.plocha.dajKartu());
     }
 
     public void odhodKarty() {
         while (this.kartyNaRuke.size() > this.zivoty) {
-//            int rando = (int)((Math.random()*this.kartyNaRuke.size()));
-            int random = random(this.kartyNaRuke.size());
-//            this.plocha.getOdhadyovaciBalikKariet().add(this.kartyNaRuke.get(rando));
-            this.plocha.pridajKartuDoOdhadzovaciehoBalika(this.kartyNaRuke.get(random));
-            this.kartyNaRuke.remove(random);
-//            System.out.println(random);
+            int nahodne = nahodne(this.kartyNaRuke.size());
+            this.plocha.pridajKartuDoOdhadzovaciehoBalika(this.kartyNaRuke.get(nahodne));
+            this.kartyNaRuke.remove(nahodne);
         }
     }
 
-    private int random(int velkost) {
-        int rando = (int) ((Math.random() * velkost));
-        return rando;
-    }
-
-    private void odhodKartu(Karta karta) {
-//        odhadzovaciBalik.add(karta);
-        this.plocha.pridajKartuDoOdhadzovaciehoBalika(karta);
-
+    private int nahodne(int velkost) {
+        return (int) ((Math.random() * velkost));
     }
 
     public ArrayList<Karta> getKartyNaRuke() {
         return kartyNaRuke;
     }
 
-    public ArrayList<Karta> getSpoecialneKarty() {
+    public ArrayList<Karta> getSpecialneKarty() {
         return spoecialneKarty;
     }
 
@@ -103,6 +94,9 @@ public class Hrac {
         return this.zivoty > 0;
     }
 
+    private void odhodKartu(Karta karta) {
+        this.plocha.pridajKartuDoOdhadzovaciehoBalika(karta);
+    }
     public void vypisKarty() {
         for (int i = 0; i < this.kartyNaRuke.size(); i++) {
             System.out.print("[" + (i + 1) + "] " + this.kartyNaRuke.get(i).getClass().getSimpleName() + "  ");
@@ -110,8 +104,8 @@ public class Hrac {
     }
 
     public void vypisKartyNaStole() {
-        for (int i = 0; i < this.spoecialneKarty.size(); i++) {
-            System.out.print(this.spoecialneKarty.get(i).getClass().getSimpleName() + "  ");
+        for (Karta karta : this.spoecialneKarty) {
+            System.out.print(karta.getClass().getSimpleName() + "  ");
         }
     }
 
@@ -121,35 +115,20 @@ public class Hrac {
     }
 
     public void zahrajKartu(Hrac cielovyHrac, int cisloKarty) {
-
-        if (this.kartyNaRuke.get(cisloKarty).jeKartahratelna(this)){
+        if (this.kartyNaRuke.get(cisloKarty).jeKartahratelna(this)) {
             this.kartyNaRuke.get(cisloKarty).hraj(cielovyHrac);
         }
-//        this.odhodKartu(this.kartyNaRuke.get(cisloKarty));
-
-//        if (this.kartyNaRuke.get(cisloKarty) instanceof CatBalou) {
-//            this.kartyNaRuke.remove(cisloKarty);
-//        }
-
-
-
     }
 
-    //    if (cisloKarty >= 0){
-//        aktivnyHrac.getKartyNaRuke().get(cisloKarty).zahrajKartu(aktivnyHrac);
-//        this.plocha.pridajKartuDoOdhadzovaciehoBalika(aktivnyHrac.getKartyNaRuke().get(cisloKarty));
-//        aktivnyHrac.odhodKartu(cisloKarty);
-//    }
-    public void setZivoty(int zivoty) {
-        this.zivoty = zivoty;
+    private void vypisHracov(ArrayList<Hrac> hraciNaVyber) {
+        for (int i = 0; i < hraciNaVyber.size(); i++) {
+            System.out.print("[" + (i + 1) + "] " + hraciNaVyber.get(i).getMeno() + "  ");
+        }
     }
 
     public Hrac vyberHraca(ArrayList<Hrac> hraci, int karta) {
         int cisloHraca = 0;
-        Karta danaKarta = this.getKartyNaRuke().get(karta);
-
         ArrayList<Hrac> hraciNaVyber = new ArrayList<>();
-
 
         for (Hrac hrac : hraci) {
             if (hrac.jeAktivny()) {
@@ -159,40 +138,23 @@ public class Hrac {
         hraciNaVyber.remove(this);
         vypisHracov(hraciNaVyber);
         while (true) {
-            cisloHraca = ZKlavesnice.readInt("\n*** Zadaj cislo hraca na ktoreho chces pouzit kartu: ***") - 1;
-//           System.out.println(cisloHraca);
-            if ((cisloHraca < 0 || cisloHraca + 1 > hraciNaVyber.size()) || !danaKarta.jeKartahratelna(hraciNaVyber.get(cisloHraca))) {
-                System.out.println(" !!! Zadal si neplatane cislo! !!! ");
+            cisloHraca = ZKlavesnice.readInt("\n*** Zadaj číslo hráča na ktorého chceš použiť kartu: ***") - 1;
+            if ((cisloHraca < 0 || cisloHraca + 1 > hraciNaVyber.size()) ) {
+                    System.out.println(" !!! Zadal si neplatné číslo! !!! ");
+
             } else {
                 break;
             }
         }
-
         return hraciNaVyber.get(cisloHraca);
-
     }
 
-    private boolean jeHratelna() {
-        if (this.kartyNaRuke.size() > 0 || this.spoecialneKarty.size() > 0) {
-            return true;
-        }
-
-        return false;
-    }
-
-    private void vypisHracov(ArrayList<Hrac> hraciNaVyber) {
-        for (int i = 0; i < hraciNaVyber.size(); i++) {
-            System.out.print("[" + (i + 1) + "] " + hraciNaVyber.get(i).getMeno() + "  ");
-        }
-
-    }
-
-    public int vyberKartu(String slovo) {
+    public int vyberKartu() {
         int cisloKarty = 0;
         while (true) {
-            cisloKarty = ZKlavesnice.readInt("\n*** Zadaj cislo ktore chces " + slovo + " alebo 0 pre koniec kola: ***") - 1;
+            cisloKarty = ZKlavesnice.readInt("\n*** Zadaj číslo ktoré chceš zahrať alebo 0 pre koniec kola: ***") - 1;
             if (cisloKarty < -1 || cisloKarty > this.getKartyNaRuke().size() - 1) {
-                System.out.println(" !!! You enter wrong number of card. Try Again! !!! ");
+                System.out.println(" !!! Zadal si zlé číslo karty alebo sa daná karta nedá zahrať, skús to znova! !!! ");
             } else {
                 break;
             }
@@ -201,11 +163,10 @@ public class Hrac {
     }
 
     public void hrajBang() {
-        int random = random(4);
-        System.out.println(random);
+        int nahodne = nahodne(4);
         for (Karta karta : this.spoecialneKarty) {
             if (karta instanceof Barrel) {
-                if (random == 1){
+                if (nahodne == 1) {
                     return;
                 }
             }
@@ -224,40 +185,35 @@ public class Hrac {
     public void hrajCatBalou() {
         int cisloVolby = 0;
         while (true) {
-            cisloVolby = ZKlavesnice.readInt("\nVyber [1]ruka alebo [2]stol") - 1;
-            if (cisloVolby > 0 && cisloVolby < 2) {
-                if (this.getKartyNaRuke().size() == 0) {
-                    System.out.println(" !!! Na ruke nema hrac karty! !!! ");
-                } else if (this.getSpoecialneKarty().size() == 0) {
-                    System.out.println(" !!! Na stole nema hrac karty! !!! ");
+            cisloVolby = ZKlavesnice.readInt("\nVyber [1]ruka alebo [2]stôl") - 1;
+            if (cisloVolby >= 0 && cisloVolby < 2) {
+                if (this.getKartyNaRuke().size() == 0 && cisloVolby == 0) {
+                    System.out.println(" !!! Na ruke nemá hráč karty! !!! ");
+                } else if (this.getSpecialneKarty().size() == 0 && cisloVolby == 1) {
+                    System.out.println(" !!! Na stole nemá hráč karty! !!! ");
                 } else {
                     break;
                 }
-
             } else {
-                break;
+                System.out.println("Neplatný rozsah");
             }
         }
 
         if (cisloVolby == 0) {
-            this.kartyNaRuke.remove(random(this.kartyNaRuke.size()));
-
+            this.kartyNaRuke.remove(nahodne(this.kartyNaRuke.size()));
         } else {
-            this.spoecialneKarty.remove(random(this.spoecialneKarty.size()));
+            this.spoecialneKarty.remove(nahodne(this.spoecialneKarty.size()));
         }
     }
 
     public void hrajIndianov(ArrayList<Hrac> hraci) {
-        ArrayList<Hrac> hraciIndiani= new ArrayList<>();
-        hraciIndiani.addAll(hraci);
+        ArrayList<Hrac> hraciIndiani = new ArrayList<>(hraci);
         hraciIndiani.remove(this);
 
-        for(Hrac hrac : hraciIndiani) {
+        for (Hrac hrac : hraciIndiani) {
             boolean nasielBang = false;
-            System.out.println(hrac.getMeno());
             for (Karta karta : hrac.getKartyNaRuke()) {
                 if (karta instanceof Bang) {
-                    System.out.println("bang");
                     hrac.getKartyNaRuke().remove(karta);
                     nasielBang = true;
                     break;
@@ -265,8 +221,33 @@ public class Hrac {
             }
             if (!nasielBang && hrac.jeAktivny()) {
                 hrac.minusZivot();
-                System.out.println("minus zivot");
             }
         }
+    }
+
+    public void hrajDynamit(ArrayList<Hrac> hraci, Karta karta, int predosliHrac) {
+        int nahodne = nahodne(8);
+        if (nahodne == 1) {
+            this.minusZivot();
+            this.minusZivot();
+            this.minusZivot();
+            this.odhodKartu(karta);
+            if (zivoty < 0) {
+                zivoty = 0;
+            }
+        } else {
+            hraci.get(predosliHrac).spoecialneKarty.add(karta);
+        }
+        this.spoecialneKarty.remove(karta);
+    }
+
+    public void hrajVazenie(Karta karta) {
+        int nahodne = nahodne(4);
+        if (nahodne == 1) {
+            this.voVazenie = false;
+        } else {
+            this.voVazenie = true;
+        }
+        this.spoecialneKarty.remove(karta);
     }
 }
