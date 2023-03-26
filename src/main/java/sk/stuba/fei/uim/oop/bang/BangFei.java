@@ -72,9 +72,6 @@ public class BangFei {
             }
         }
 
-        System.out.println(this.plocha.getOdhadyovaciBalikKariet().size());
-        System.out.println(this.plocha.getBalikKariet().size());
-
         int cisloKarty = 0;
         Hrac cielovyHrac;
 
