@@ -1,9 +1,8 @@
-package sk.stuba.fei.uim.oop.karty;
+package sk.stuba.fei.uim.oop.karty.hnedeKarty;
 
 import sk.stuba.fei.uim.oop.hrac.Hrac;
-import sk.stuba.fei.uim.oop.plocha.Plocha;
 
-public class Pivo extends Karta{
+public class Pivo extends HnedaKarta {
 
     private static final String CARD_NAME = "Pivo";
 
@@ -11,8 +10,11 @@ public class Pivo extends Karta{
         super(CARD_NAME);
     }
 
+
     @Override
-    public void zahrajKartu(Hrac hrac) {
+    public void hraj(Hrac hrac) {
+        super.hraj(hrac);
         hrac.plusZivot();
+
     }
 }

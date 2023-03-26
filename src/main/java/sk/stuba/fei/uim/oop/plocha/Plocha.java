@@ -2,6 +2,10 @@ package sk.stuba.fei.uim.oop.plocha;
 
 import sk.stuba.fei.uim.oop.hrac.Hrac;
 import sk.stuba.fei.uim.oop.karty.*;
+import sk.stuba.fei.uim.oop.karty.hnedeKarty.*;
+import sk.stuba.fei.uim.oop.karty.modreKarty.Barrel;
+import sk.stuba.fei.uim.oop.karty.modreKarty.Dynamit;
+import sk.stuba.fei.uim.oop.karty.modreKarty.Vazenie;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,7 +16,7 @@ public class Plocha {
 
     private ArrayList<Karta> odhadyovaciBalikKariet;
 
-    public Plocha(Hrac[] hraci) {
+    public Plocha() {
         this.balikKariet =  new ArrayList<>();
         this.odhadyovaciBalikKariet = new ArrayList<>();
         for (int i = 0; i < 30; i++) {
@@ -30,8 +34,8 @@ public class Plocha {
         for (int i = 0; i < 4; i++) {
             balikKariet.add(new Dostavnik());
         }
-        for (int i = 0; i < 3; i++) {
-            balikKariet.add(new Vazenie());
+        for (int i = 0; i < 20; i++) {
+            balikKariet.add(new Dynamit());
         }
         balikKariet.add(new Indiani());
         balikKariet.add(new Indiani());
@@ -40,13 +44,7 @@ public class Plocha {
         balikKariet.add(new Dynamit());
 
          Collections.shuffle(this.balikKariet);
-        for (Hrac hrac : hraci) {
-            ArrayList<Karta> noveKarty = new ArrayList<>();
-            for (int i = 0; i < 4; i++) {
-                noveKarty.add(balikKariet.remove(0));
-            }
-            hrac.setKarty(noveKarty);
-        }
+
     }
 
     public void vytlacPlochu() {
@@ -70,14 +68,14 @@ public class Plocha {
     }
 
     public Karta dajKartu() {
-        if (this.balikKariet.size()==0){
+        Karta karta = this.balikKariet.get(0);
+        this.balikKariet.remove(0);
+        return karta;
+    }
+    public void prehodKarty() {
+        if (this.balikKariet.size()==0 || this.balikKariet.size()==1){
             this.balikKariet.addAll(this.odhadyovaciBalikKariet);
             this.odhadyovaciBalikKariet.clear();
         }
-
-        Karta karta = this.balikKariet.get(0);
-        this.balikKariet.remove(0);
-
-        return karta;
     }
 }
